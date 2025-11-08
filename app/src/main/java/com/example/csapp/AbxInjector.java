@@ -1,16 +1,13 @@
-package com.example.abxoverflow;
+package com.example.csapp;
 
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
 import android.annotation.SuppressLint;
-import android.content.ContextWrapper;
 import android.content.pm.Checksum;
 import android.content.pm.PackageInstaller;
 import android.os.Process;
-
-import org.xmlpull.v1.XmlSerializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

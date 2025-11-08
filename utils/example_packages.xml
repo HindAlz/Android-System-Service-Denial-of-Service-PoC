@@ -762,7 +762,7 @@
     <item name="android.permission.WRITE_USER_DICTIONARY" package="android" />
     <item name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS" package="android" protection="67108868" />
     <item name="android.permission.BIND_VISUAL_QUERY_DETECTION_SERVICE" package="android" protection="2" />
-    <item name="com.example.abxoverflow.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" package="com.example.abxoverflow" protection="2" />
+    <item name="com.example.csapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" package="com.example.csapp" protection="2" />
     <item name="android.permission.REGISTER_STATS_PULL_ATOM" package="android" protection="18" />
     <item name="android.permission.REGISTER_SIM_SUBSCRIPTION" package="android" protection="18" />
     <item name="android.permission.health.WRITE_NUTRITION" package="com.android.healthconnect.controller" protection="1" />
@@ -1138,7 +1138,7 @@
     </sigs>
     <proper-signing-keyset identifier="2" />
   </package>
-  <package name="com.example.abxoverflow" codePath="/data/app/~~TDW9XnFTfgsmOgTmC1pDrA==/com.example.abxoverflow-0cPqgMXyH2_rDgl5VpLemA==" nativeLibraryPath="/data/app/~~TDW9XnFTfgsmOgTmC1pDrA==/com.example.abxoverflow-0cPqgMXyH2_rDgl5VpLemA==/lib" publicFlags="541638470" privateFlags="-1946152960" ft="18b46681b7a" ut="18b46681bc3" version="1" userId="101000" packageSource="1" installInitiator="com.android.shell" loadingProgress="1.0" loadingCompletedTime="0" domainSetId="457c8ba4-04b3-45a8-b3ea-3b997a66dac9">
+  <package name="com.example.csapp" codePath="/data/app/~~TDW9XnFTfgsmOgTmC1pDrA==/com.example.abxoverflow-0cPqgMXyH2_rDgl5VpLemA==" nativeLibraryPath="/data/app/~~TDW9XnFTfgsmOgTmC1pDrA==/com.example.abxoverflow-0cPqgMXyH2_rDgl5VpLemA==/lib" publicFlags="541638470" privateFlags="-1946152960" ft="18b46681b7a" ut="18b46681bc3" version="1" userId="101000" packageSource="1" installInitiator="com.android.shell" loadingProgress="1.0" loadingCompletedTime="0" domainSetId="457c8ba4-04b3-45a8-b3ea-3b997a66dac9">
     <sigs count="1" schemeVersion="2">
       <cert index="4" key="308202e4308201cc020101300d06092a864886f70d010105050030373116301406035504030c0d416e64726f69642044656275673110300e060355040a0c07416e64726f6964310b30090603550406130255533020170d3233303731353037303733335a180f32303533303730373037303733335a30373116301406035504030c0d416e64726f69642044656275673110300e060355040a0c07416e64726f6964310b300906035504061302555330820122300d06092a864886f70d01010105000382010f003082010a0282010100bdb4caf07e36cf060c983f529e25bf019a7b516465e2d619ea669966b2e4b5759cdf7943d6c8f34d41ac6e22e8bd87f4587589d28ee648f829090a1bb16abf0f0b6ace8b1d048af62db16f83210a250f0aae4efbc0ff5efe2017389f916dd7786486dab620cca403528bc0dde30a775ab125a08ce4c1cf1cb74c2a6e3c2b4c817b7838ca91c7c9d04f76f7c1e167be28bd16ba7317cedb7a0590cacc6d7533653ca5cf385fed768a4a59f66c6be84dffa10103d666f7003eaa7af98eb67d7c8490a185277108e72775537f49765232909c4d32d3749a6df063e1400ce3cd08824003ab800eaad215ae065112948309a534e77b27b4dc969d523843f5e077b0570203010001300d06092a864886f70d0101050500038201010054958da5f0ade197862a71049801dc3d887c3a0090f20b2971df8578358981b8fc79eea5d905fa363823e2dca407e3ac386f5a85b4cb79f09eb16868ed06a7f5288991f6997f6fd028b71433115c4692d5134860e159057318226836b79bc4d372377b2148c726dbae59a27fd2f577177406530079b1c8b955cf5a4c76c804a977d7f235be446035e579f31f2145b76dc3cd3618ab87a97e708eb7b02250e263637a527e09dd18eb02f47f3e94134f0183a7dd7b5cc4d4378d10847134e6b810277a33d9ef14a9e6435567fdb7abad779bb3cb51f824aac53a614578d7769267cce2e8767489160d451250b126f77e879df81a008a20b608ddbed2a281cb2162" />
     </sigs>
@@ -2171,7 +2171,7 @@
       <package-state packageName="com.android.storagemanager" id="18caa393-9e8c-4fce-8086-7ab951c7e64c" />
       <package-state packageName="com.android.ondevicepersonalization.services" id="31d16603-3da9-4df6-8985-2735041d8bdc" />
       <package-state packageName="com.android.cameraextensions" id="85a13c07-f9c9-48e6-8bd6-6730ab971ff6" />
-      <package-state packageName="com.example.abxoverflow" id="457c8ba4-04b3-45a8-b3ea-3b997a66dac9" />
+      <package-state packageName="com.example.csapp" id="457c8ba4-04b3-45a8-b3ea-3b997a66dac9" />
       <package-state packageName="com.android.externalstorage" id="96b9361d-e5a7-4c21-8f0b-1fe481ada362" />
       <package-state packageName="com.android.mms.service" id="2feffd5b-1f87-40c0-a3d0-0d77bcef5a2c" />
       <package-state packageName="com.android.packageinstaller" id="531514f9-3bf7-4fb9-a9ca-535e5feb6da9" />
@@ -2375,7 +2375,7 @@
     <user-states packageName="com.android.dynsystem">
       <user-state userId="0" state="0" />
     </user-states>
-    <user-states packageName="com.example.abxoverflow">
+    <user-states packageName="com.example.csapp">
       <user-state userId="0" state="0" />
     </user-states>
     <user-states packageName="com.android.healthconnect.controller">
