@@ -1,7 +1,4 @@
 <resources>
-    <string name="do_everything">Do everything</string>
-    <string name="stage_1">Stage 1</string>
-    <string name="stage_2">Stage 2</string>
     <string name="start">Start</string>
     <string name="done_toast">Done</string>
 

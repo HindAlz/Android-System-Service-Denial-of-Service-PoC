@@ -12,7 +12,7 @@
         android:label="@string/NewsReader"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AbxOverflow">
+        android:theme="@style/Theme.csapp">
         <activity
             android:name=".MainActivity"
             android:exported="true">
