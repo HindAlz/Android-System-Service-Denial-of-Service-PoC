@@ -21,11 +21,11 @@ android {
         }
     }
 
-    namespace 'com.example.abxoverflow'
+    namespace 'com.example.csapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.abxoverflow"
+        applicationId "com.example.csapp"
         minSdk 31
         targetSdk 33
         versionCode 1
