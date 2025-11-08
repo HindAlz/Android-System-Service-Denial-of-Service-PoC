@@ -4,6 +4,7 @@ import java.io.IOException;
 public class Main {
 
     static void crashSystemServer() throws IOException {
+
         new ProcessBuilder(
                 // IAlarmManager.set
                 "service", "call", "alarm", "1",
