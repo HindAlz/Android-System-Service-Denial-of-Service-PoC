@@ -104,7 +104,7 @@ public class RebootBackgroundRunner {
             }
 
             // ---- Run work twice ----
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 Thread.sleep(10000);
                 Log.v(TAG, "Run iteration " + (i + 1) + " of 2");
                 try {
