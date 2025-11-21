@@ -54,7 +54,7 @@ So in total:
 That’s it. The whole attack starts with this tiny button!
 
 
-### Super Simple Explanation of the Exploit Inside `Main.java`
+### `Main.java`
 
 This file is the **actual weapon**.  
 Everything else (button, background runner) just runs one line from this file.
