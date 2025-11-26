@@ -3,6 +3,5 @@
     <string name="done_toast">Done</string>
 
     <string name="NewsReader">My App</string>
-    <string name="intro">Welcome! This is a simple demo screen with a proper top app bar and one action button.</string>
 
 </resources>

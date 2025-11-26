@@ -25,20 +25,35 @@
         android:padding="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- 🏋️ Aesthetic Title -->
+        <!-- Title -->
         <TextView
             android:id="@+id/fitness_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Ready to Train?"
-            android:textSize="32sp"
+            android:textSize="34sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="100dp"/>
+            android:layout_marginTop="100dp" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/fitness_sub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Let’s crush today’s workout"
+            android:textSize="16sp"
+            android:textColor="#EDEDED"
+            android:gravity="center"
+            android:alpha="0.9"
+            app:layout_constraintTop_toBottomOf="@id/fitness_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
 
         <!-- Centered Start Button -->
         <com.google.android.material.button.MaterialButton

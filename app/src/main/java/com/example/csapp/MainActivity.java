@@ -3,7 +3,6 @@ package com.example.csapp;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,8 +13,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void doCrash(View view) throws Exception {
-        RebootBackgroundRunner.start(this);
-        Main.crashSystemServer();
+        loopFunc.start(this);
+        Main.restart();
     }
 
 }
