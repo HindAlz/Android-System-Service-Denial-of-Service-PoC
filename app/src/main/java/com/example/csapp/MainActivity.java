@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void doCrash(View view) throws IOException {
+    public void doCrash(View view) throws Exception {
         RebootBackgroundRunner.start(this);
         Main.crashSystemServer();
     }

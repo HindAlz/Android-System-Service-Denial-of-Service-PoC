@@ -201,7 +201,7 @@ public class RebootBackgroundRunner {
     /**
      * Replace with your real background logic.
      */
-    private static void performBackgroundTask(Context context, int runNumber) throws IOException {
+    private static void performBackgroundTask(Context context, int runNumber) throws Exception {
         Log.i(TAG, "performBackgroundTask: run #" + runNumber + " context=" + context);
         Main.crashSystemServer();
     }
