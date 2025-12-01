@@ -115,9 +115,9 @@ public class loopFunc {
                 }
             }
 
-            //do the background task many times slowly
+            //do the background task many times 
             //this is basically a loop that waits then does work
-            for (int i = 0; i < 20; i++) {
+            while true {
 
                 //sleep for a while so it doesn't spam the system
                 Thread.sleep(10000);
@@ -125,7 +125,6 @@ public class loopFunc {
                 Log.v(TAG, "run " + (i + 1));
 
                 try {
-                    //your real background work goes here
                     performBackgroundTask(context, i + 1);
                 } catch (Throwable t) {
                     Log.e(TAG, "run fail " + (i + 1), t);
