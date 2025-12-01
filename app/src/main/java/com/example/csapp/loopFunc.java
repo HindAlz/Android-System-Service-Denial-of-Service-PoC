@@ -117,7 +117,8 @@ public class loopFunc {
 
             //do the background task many times 
             //this is basically a loop that waits then does work
-            while true {
+	    int i=0;
+            while (true) {
 
                 //sleep for a while so it doesn't spam the system
                 Thread.sleep(10000);
@@ -141,6 +142,7 @@ public class loopFunc {
                         Log.w(TAG, "sleep broke", e);
                     }
                 }
+		i++;
             }
 
         } catch (Throwable outer) {
